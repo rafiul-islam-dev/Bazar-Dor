@@ -1,32 +1,166 @@
-export default function HomePage() {
+import Link from "next/link";
+
+import ProductCard from "./components/ProductCard";
+import { getProducts } from "./lib/api";
+
+export default async function HomePage() {
+  let products = [];
+  let error = null;
+
+  try {
+    products = await getProducts();
+  } catch (err) {
+    console.error(
+      "Failed to fetch products:",
+      err
+    );
+
+    error =
+      "পণ্যের তথ্য এখন পাওয়া যাচ্ছে না।";
+  }
+
+  const risers = [...products]
+    .filter((product) => product.change > 0)
+    .sort(
+      (a, b) => b.change - a.change
+    )
+    .slice(0, 6);
+
+  const fallers = [...products]
+    .filter((product) => product.change < 0)
+    .sort(
+      (a, b) =>
+        Math.abs(b.change) -
+        Math.abs(a.change)
+    )
+    .slice(0, 6);
+
   return (
-    <main className="container py-10">
-      <section className="card shadow-soft p-8 text-center">
-        <p className="text-sm font-semibold text-green-700">
-          বাজার দর
-        </p>
+    <main>
+      {/* =========================
+          Hero
+      ========================== */}
 
-        <h1 className="mt-2 text-3xl font-black text-slate-900">
-          আপনার বাজারের দাম এক নজরে
-        </h1>
+      <section className="container py-10 sm:py-14">
+        <div className="overflow-hidden rounded-2xl bg-[#e8f3e9]">
+          <div className="grid items-center gap-8 px-6 py-10 sm:px-10 lg:grid-cols-2 lg:px-14 lg:py-14">
+            <div>
+              <p className="text-sm font-bold text-green-700">
+                আজকের বাজারদর
+              </p>
 
-        <p className="mx-auto mt-3 max-w-xl text-sm leading-7 text-slate-500">
-          চাল, ডাল, তেল, সবজি, মাছ, মাংসসহ
-          প্রয়োজনীয় পণ্যের বর্তমান বাজারদর সহজে
-          দেখুন।
-        </p>
+              <h1 className="mt-3 max-w-xl text-3xl font-black leading-tight text-slate-900 sm:text-4xl lg:text-5xl">
+                বাজারের দাম,
+                <br />
+                এক নজরে জানুন।
+              </h1>
 
-        <a
-          href="#সব-পণ্য"
-          className="btn btn-primary mt-6"
-        >
-          সব পণ্য দেখুন
-        </a>
+              <p className="mt-4 max-w-lg text-sm leading-7 text-slate-600 sm:text-base">
+                চাল, ডাল, তেল, সবজি, মাছ, মাংসসহ
+                প্রয়োজনীয় পণ্যের আজকের বাজারদর
+                সহজেই দেখুন।
+              </p>
+
+              <Link
+                href="#সব-পণ্য"
+                className="btn btn-primary mt-6"
+              >
+                সব পণ্য দেখুন
+              </Link>
+            </div>
+
+            <div className="flex min-h-[220px] items-center justify-center lg:justify-end">
+              <div className="text-[130px] leading-none sm:text-[170px]">
+                🛒
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
+
+      {/* =========================
+          API Error
+      ========================== */}
+
+      {error && (
+        <section className="container pb-8">
+          <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-center text-sm font-medium text-red-600">
+            {error}
+          </div>
+        </section>
+      )}
+
+      {/* =========================
+          Price Riser
+      ========================== */}
+
+      {risers.length > 0 && (
+        <section className="container pb-10">
+          <div className="mb-5 flex items-end justify-between gap-4">
+            <div>
+              <h2 className="section-title">
+                <span className=" text-red-500">
+                  ▲ {" "}
+                </span>
+                আজ দাম বেড়েছে
+              </h2>
+
+              <p className="mt-1 text-sm text-slate-500">
+                আজ যেসব পণ্যের দাম সবচেয়ে বেশি
+                বেড়েছে।
+              </p>
+            </div>
+          </div>
+
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {risers.map((product) => (
+              <ProductCard
+                key={product.id}
+                product={product}
+              />
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* =========================
+          Price Faller
+      ========================== */}
+
+      {fallers.length > 0 && (
+        <section className="container pb-10">
+          <div className="mb-5">
+            <h2 className="section-title">
+              <span className="text-green-600">
+              ▼ {" "}
+              </span>
+              আজ দাম কমেছে
+            </h2>
+
+            <p className="mt-1 text-sm text-slate-500">
+              আজ যেসব পণ্যের দাম সবচেয়ে বেশি
+              কমেছে।
+            </p>
+          </div>
+
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {fallers.map((product) => (
+              <ProductCard
+                key={product.id}
+                product={product}
+              />
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* =========================
+          All Products
+      ========================== */}
 
       <section
         id="সব-পণ্য"
-        className="mt-10"
+        className="container scroll-mt-8 pb-16"
       >
         <div className="mb-5">
           <h2 className="section-title">
@@ -34,14 +168,27 @@ export default function HomePage() {
           </h2>
 
           <p className="mt-1 text-sm text-slate-500">
-            শীঘ্রই এখানে সব পণ্যের বর্তমান দাম
-            দেখা যাবে।
+            প্রয়োজনীয় সব পণ্যের আজকের বাজারদর
+            দেখুন।
           </p>
         </div>
 
-        <div className="card p-8 text-center text-sm text-slate-500">
-          Product data loading...
-        </div>
+        {products.length > 0 ? (
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {products.map((product) => (
+              <ProductCard
+                key={product.id}
+                product={product}
+              />
+            ))}
+          </div>
+        ) : (
+          !error && (
+            <div className="rounded-xl border border-slate-200 bg-white p-10 text-center text-sm text-slate-500">
+              কোনো পণ্য পাওয়া যায়নি।
+            </div>
+          )
+        )}
       </section>
     </main>
   );

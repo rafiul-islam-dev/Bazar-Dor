@@ -272,3 +272,46 @@ img {
     font-size: 18px;
   }
 }
+/* Horizontal category navigation */
+
+nav .container > div {
+  scrollbar-width: none;
+}
+
+nav .container > div::-webkit-scrollbar {
+  display: none;
+}
+
+/* Infinite ticker */
+
+.ticker-mask {
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.ticker-track {
+  display: flex;
+  width: max-content;
+  animation: ticker 80s linear infinite;
+}
+
+.ticker-mask:hover .ticker-track {
+  animation-play-state: paused;
+}
+
+@keyframes ticker {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ticker-track {
+    animation: none;
+  }
+}
