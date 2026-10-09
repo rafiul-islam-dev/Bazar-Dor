@@ -224,19 +224,24 @@ export async function getProducts() {
   );
 }
 
+
 /**
- * Get one product.
+ * Get one product by slug or ID.
  */
 export async function getProduct(slug) {
-  const response = await request(
-    `/products/${encodeURIComponent(slug)}`
+  const products = await getProducts();
+
+  const product = products.find(
+    (item) =>
+      String(item.slug) === String(slug) ||
+      String(item.id) === String(slug)
   );
 
-  if (response?.data) {
-    return normalizeProduct(response.data);
+  if (!product) {
+    throw new Error(`Product not found: ${slug}`);
   }
 
-  return normalizeProduct(response);
+  return product;
 }
 
 /**
