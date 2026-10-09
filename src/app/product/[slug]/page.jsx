@@ -4,6 +4,12 @@ import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import { getProduct, formatPrice } from "../../lib/api";
 
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
+import { auth } from "../../../lib/auth";
+
+export const instant = false;
+
 function LoadingDetails() {
     return (
         <main className="container py-12">
@@ -17,7 +23,17 @@ function LoadingDetails() {
 }
 
 async function ProductDetailsContent({ params }) {
+    
     const { slug } = await params;
+
+    const session = await auth.api.getSession({
+        headers: await headers(),
+    });
+
+    if (!session) {
+        redirect(`/sign-in?callbackURL=${encodeURIComponent(`/product/${slug}`)}`);
+    }
+
 
     let product;
 
@@ -138,13 +154,12 @@ async function ProductDetailsContent({ params }) {
                         </p>
 
                         <p
-                            className={`mt-4 text-sm font-semibold leading-6 ${
-                                difference > 0
+                            className={`mt-4 text-sm font-semibold leading-6 ${difference > 0
                                     ? "text-red-600"
                                     : difference < 0
                                         ? "text-green-600"
                                         : "text-gray-500"
-                            }`}
+                                }`}
                         >
                             {differenceText}
                         </p>
