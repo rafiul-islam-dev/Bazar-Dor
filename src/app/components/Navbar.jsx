@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ShoppingCart } from "lucide-react";
+import { Suspense } from "react";
 
 import AuthButtons from "./AuthButtons";
 import PriceTicker from "./PriceTicker";
@@ -13,13 +14,14 @@ const BASE_URL =
   "https://api.api-store.workers.dev/api/bazardor";
 
 const fallbackCategories = [
-  { name: "চাল", slug: "chal" },
-  { name: "ডাল", slug: "dal" },
-  { name: "তেল", slug: "tel" },
-  { name: "সবজি", slug: "sobji" },
-  { name: "মাছ", slug: "mach" },
-  { name: "মাংস", slug: "mangsho" },
-  { name: "ডিম", slug: "dim" },
+  { id: "chal", name: "চাল", slug: "chal", icon: "🍚" },
+  { id: "dal", name: "ডাল", slug: "dal", icon: "🫘" },
+  { id: "tel", name: "তেল", slug: "tel", icon: "🛢️" },
+  { id: "sobji", name: "সবজি", slug: "sobji", icon: "🥬" },
+  { id: "mach", name: "মাছ", slug: "mach", icon: "🐟" },
+  { id: "mangsho", name: "মাংস", slug: "mangsho", icon: "🍗" },
+  { id: "dim-dui", name: "ডিম-দুধ", slug: "dim-dui", icon: "🥛" },
+  { id: "mosla", name: "মসলা", slug: "mosla", icon: "🌶️" },
 ];
 
 function getArray(response, key) {
@@ -34,10 +36,12 @@ function normalizeCategory(category) {
     return {
       name: category,
       slug: category,
+      icon: "🛒",
     };
   }
 
   const name =
+    category?.nameBn ??
     category?.name ??
     category?.title ??
     category?.category ??
@@ -47,15 +51,16 @@ function normalizeCategory(category) {
     category?.slug ??
     category?.category_slug ??
     category?.id ??
-    name;
+    "";
 
   return {
     name: String(name),
     slug: String(slug),
+    icon: category?.icon ?? "🛒",
   };
 }
 
-export default function Navbar() {
+function NavbarContent() {
   const pathname = usePathname();
 
   const [categories, setCategories] = useState(
@@ -131,10 +136,6 @@ export default function Navbar() {
               বাজার দর
             </h1>
 
-            <p className="text-[10px] text-slate-500">
-              প্রয়োজনীয় পণ্যের দাম এক নজরে
-            </p>
-
             <BanglaDate />
           </div>
         </Link>
@@ -191,5 +192,20 @@ export default function Navbar() {
 
       <PriceTicker products={products} />
     </header>
+  );
+}
+
+export default function Navbar() {
+  return (
+    <Suspense
+      fallback={
+        <div
+          className="min-h-16"
+          aria-hidden="true"
+        />
+      }
+    >
+      <NavbarContent />
+    </Suspense>
   );
 }

@@ -1,4 +1,6 @@
 import Link from "next/link";
+import Image from "next/image";
+import BanglaDate from "./components/BanglaDate";
 
 import ProductCard from "./components/ProductCard";
 import { getProducts } from "./lib/api";
@@ -44,15 +46,13 @@ export default async function HomePage() {
       <section className="container py-10 sm:py-14">
         <div className="overflow-hidden rounded-2xl bg-[#e8f3e9]">
           <div className="grid items-center gap-8 px-6 py-10 sm:px-10 lg:grid-cols-2 lg:px-14 lg:py-14">
-            <div>
-              <p className="text-sm font-bold text-green-700">
-                আজকের বাজারদর
-              </p>
+              <div className="mb-4">
+                <div className="inline-flex items-center rounded-2xl bg-gray-100 px-4 py-2">
+                  <BanglaDate />
+                </div>
 
-              <h1 className="mt-3 max-w-xl text-3xl font-black leading-tight text-slate-900 sm:text-4xl lg:text-5xl">
-                বাজারের দাম,
-                <br />
-                এক নজরে জানুন।
+              <h1 className="mt-3 max-w-xl text-2xl font-black leading-tight text-slate-900 sm:text-4xl lg:text-5xl">
+                আজকের বাজারের দাম এক নজরে
               </h1>
 
               <p className="mt-4 max-w-lg text-sm leading-7 text-slate-600 sm:text-base">
@@ -71,7 +71,18 @@ export default async function HomePage() {
 
             <div className="flex min-h-[220px] items-center justify-center lg:justify-end">
               <div className="text-[130px] leading-none sm:text-[170px]">
-                🛒
+
+                <div className="relative mx-auto w-full max-w-lg">
+                  <Image
+                    src="/bazar-hero.png"
+                    alt="বাজার দর — নিত্যপ্রয়োজনীয় পণ্য"
+                    width={700}
+                    height={600}
+                    priority
+                    className="h-auto w-full object-contain"
+                  />
+                </div>
+
               </div>
             </div>
           </div>
@@ -132,7 +143,7 @@ export default async function HomePage() {
           <div className="mb-5">
             <h2 className="section-title">
               <span className="text-green-600">
-              ▼ {" "}
+                ▼ {" "}
               </span>
               আজ দাম কমেছে
             </h2>
