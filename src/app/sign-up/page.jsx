@@ -5,6 +5,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { authClient, signUp } from "@/lib/auth-client";
+import toast from "react-hot-toast";
+import SocialAuthButtons from "../components/SocialAuthButtons";
 
 export default function SignUpPage() {
   const router = useRouter();
@@ -21,12 +23,12 @@ export default function SignUpPage() {
     setError("");
 
     if (password !== confirmPassword) {
-      setError("দুটি পাসওয়ার্ড মিলছে না।");
+      toast.error("দুটি পাসওয়ার্ড মিলছে না।");
       return;
     }
 
     if (password.length < 8) {
-      setError("পাসওয়ার্ড কমপক্ষে ৮ অক্ষরের হতে হবে।");
+      toast.error("পাসওয়ার্ড কমপক্ষে ৮ অক্ষরের হতে হবে।");
       return;
     }
 
@@ -40,10 +42,12 @@ export default function SignUpPage() {
       });
 
       if (result.error) {
-        setError(result.error.message || "অ্যাকাউন্ট তৈরি করা যায়নি।");
+        toast.error(
+          result.error.message || "অ্যাকাউন্ট তৈরি করা যায়নি। আবার চেষ্টা করুন।"
+        );
         return;
       }
-
+      toast.success("অ্যাকাউন্ট সফলভাবে তৈরি হয়েছে!");
       router.push("/");
       router.refresh();
     } catch {
@@ -171,6 +175,17 @@ export default function SignUpPage() {
             {loading ? "অ্যাকাউন্ট তৈরি হচ্ছে..." : "অ্যাকাউন্ট তৈরি করো"}
           </button>
         </form>
+        <div className="space-y-4 mt-4">
+
+          <div className="flex items-center gap-3">
+            <div className="h-px flex-1 bg-gray-200" />
+            <span className="text-sm text-gray-500">
+              অথবা
+            </span>
+            <div className="h-px flex-1 bg-gray-200" />
+          </div>
+          <SocialAuthButtons />
+        </div>
 
         <p className="mt-6 text-center text-sm text-gray-600">
           আগে থেকেই অ্যাকাউন্ট আছে?{" "}

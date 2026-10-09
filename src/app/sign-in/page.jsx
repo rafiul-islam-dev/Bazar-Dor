@@ -5,6 +5,8 @@ import { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { signIn } from "@/lib/auth-client";
+import toast from "react-hot-toast";
+import SocialAuthButtons from "../components/SocialAuthButtons";
 
 function SignInForm() {
     const router = useRouter();
@@ -28,17 +30,18 @@ function SignInForm() {
             });
 
             if (result.error) {
-                setError(
-                    result.error.message ||
-                        "ইমেইল অথবা পাসওয়ার্ড সঠিক নয়।"
+                toast.error(
+                    result.error.message || "সাইন ইন করা যায়নি। আবার চেষ্টা করুন।"
                 );
                 return;
             }
 
+            toast.success("সাইন ইন সফল হয়েছে!");
+
             // Return to the requested page after successful login.
             const safeCallbackURL =
                 callbackURL.startsWith("/") &&
-                !callbackURL.startsWith("//")
+                    !callbackURL.startsWith("//")
                     ? callbackURL
                     : "/";
 
@@ -129,6 +132,17 @@ function SignInForm() {
                         {loading ? "লগইন হচ্ছে..." : "লগইন করো"}
                     </button>
                 </form>
+                <div className="space-y-4 mt-4">
+
+                    <div className="flex items-center gap-3">
+                        <div className="h-px flex-1 bg-gray-200" />
+                        <span className="text-sm text-gray-500">
+                            অথবা
+                        </span>
+                        <div className="h-px flex-1 bg-gray-200" />
+                    </div>
+                    <SocialAuthButtons />
+                </div>
 
                 <p className="mt-6 text-center text-sm text-gray-600">
                     অ্যাকাউন্ট নেই?{" "}

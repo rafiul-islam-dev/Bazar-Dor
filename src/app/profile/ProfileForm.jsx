@@ -4,6 +4,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
+import toast from "react-hot-toast";
 
 export default function ProfileForm({ user }) {
     const router = useRouter();
@@ -19,19 +20,23 @@ export default function ProfileForm({ user }) {
         .charAt(0)
         .toUpperCase();
 
+
     async function handleSave(e) {
         e.preventDefault();
+
         setError("");
         setSuccess("");
 
         const trimmedName = name.trim();
 
         if (!trimmedName) {
+            toast.error("তোমার নাম লিখো।");
             setError("তোমার নাম লিখো।");
             return;
         }
 
         if (trimmedName.length > 100) {
+            toast.error("নাম ১০০ অক্ষরের মধ্যে রাখো।");
             setError("নাম ১০০ অক্ষরের মধ্যে রাখো।");
             return;
         }
@@ -44,21 +49,27 @@ export default function ProfileForm({ user }) {
             });
 
             if (result.error) {
-                setError(
-                    result.error.message || "নাম আপডেট করা যায়নি।"
-                );
+                const message =
+                    result.error.message || "নাম আপডেট করা যায়নি।";
+
+                toast.error(message);
+                setError(message);
                 return;
             }
 
             setName(trimmedName);
             setSuccess("তোমার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে।");
+            toast.success("প্রোফাইল সফলভাবে আপডেট হয়েছে!");
+
             router.refresh();
         } catch {
+            toast.error("একটি সমস্যা হয়েছে। আবার চেষ্টা করো।");
             setError("একটি সমস্যা হয়েছে। আবার চেষ্টা করো।");
         } finally {
             setSaving(false);
         }
     }
+
 
     async function handleSignOut() {
         setError("");
@@ -68,10 +79,10 @@ export default function ProfileForm({ user }) {
             const result = await authClient.signOut();
 
             if (result.error) {
-                setError("সাইন আউট করা যায়নি। আবার চেষ্টা করো।");
+                toast.error("সাইন আউট করা যায়নি। আবার চেষ্টা করো।");
                 return;
             }
-
+            toast.success("সাইন আউট সফল হয়েছে")
             router.replace("/sign-in");
             router.refresh();
         } catch {
@@ -123,10 +134,6 @@ export default function ProfileForm({ user }) {
                 <h2 className="text-xl font-bold text-gray-900">
                     তথ্য
                 </h2>
-
-                <p className="mt-2 text-sm text-gray-500">
-                    তোমার অ্যাকাউন্টের নাম এখান থেকে পরিবর্তন করতে পারো।
-                </p>
 
                 <form onSubmit={handleSave} className="mt-6 max-w-xl">
                     <label
