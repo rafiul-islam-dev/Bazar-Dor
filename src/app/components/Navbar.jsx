@@ -11,7 +11,7 @@ import PriceTicker from "./PriceTicker";
 import BanglaDate from "./BanglaDate";
 
 const BASE_URL =
-  "https://api.api-store.workers.dev/api/bazardor";
+  "https://openapi.programming-hero.com/api/bazardor";
 
 const fallbackCategories = [
   { id: "chal", name: "চাল", slug: "chal", icon: "🍚" },
@@ -153,11 +153,10 @@ function NavbarContent() {
           <div className="flex gap-1 overflow-x-auto py-2">
             <Link
               href="/"
-              className={`shrink-0 whitespace-nowrap rounded-md px-4 py-2 text-sm font-semibold transition ${
-                pathname === "/"
+              className={`shrink-0 whitespace-nowrap rounded-md px-4 py-2 text-sm font-semibold transition ${pathname === "/"
                   ? "bg-[#087f42] text-white"
                   : "text-slate-700 hover:bg-green-50 hover:text-green-700"
-              }`}
+                }`}
             >
               সব
             </Link>
@@ -174,12 +173,14 @@ function NavbarContent() {
                   key={category.slug}
                   href={href}
                   aria-current={active ? "page" : undefined}
-                  className={`shrink-0 whitespace-nowrap rounded-md px-4 py-2 text-sm font-semibold transition ${
-                    active
+                  className={`shrink-0 whitespace-nowrap rounded-md px-4 py-2 text-sm font-semibold transition ${active
                       ? "bg-[#087f42] text-white"
                       : "text-slate-700 hover:bg-green-50 hover:text-green-700"
-                  }`}
+                    }`}
                 >
+                  <span className="mr-1.5" aria-hidden="true">
+                    {category.icon}
+                  </span>
                   {category.name}
                 </Link>
               );

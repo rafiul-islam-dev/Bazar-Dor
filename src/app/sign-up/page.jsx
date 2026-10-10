@@ -70,11 +70,11 @@ export default function SignUpPage() {
           </Link>
 
           <h1 className="text-3xl font-bold text-gray-900">
-            অ্যাকাউন্ট তৈরি করো
+            অ্যাকাউন্ট তৈরি করুন
           </h1>
 
           <p className="mt-3 text-sm leading-6 text-gray-600">
-            বাজার দর ব্যবহার করতে তোমার তথ্য দিয়ে নিবন্ধন করো।
+            বিনা খরচে সাইন আপ করে সব বিস্তারিত দাম দেখুন।
           </p>
         </div>
 
@@ -153,7 +153,7 @@ export default function SignUpPage() {
               required
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              placeholder="আবার পাসওয়ার্ড লিখো"
+              placeholder="আবার পাসওয়ার্ড লিখুন"
               className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none transition focus:border-green-600 focus:ring-2 focus:ring-green-100"
             />
           </div>
@@ -172,7 +172,7 @@ export default function SignUpPage() {
             disabled={loading}
             className="w-full rounded-lg bg-green-700 px-4 py-3 font-semibold text-white transition hover:bg-green-800 disabled:cursor-not-allowed disabled:opacity-60"
           >
-            {loading ? "অ্যাকাউন্ট তৈরি হচ্ছে..." : "অ্যাকাউন্ট তৈরি করো"}
+            {loading ? "অ্যাকাউন্ট তৈরি হচ্ছে..." : "অ্যাকাউন্ট তৈরি করুন"}
           </button>
         </form>
         <div className="space-y-4 mt-4">

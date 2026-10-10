@@ -1,5 +1,5 @@
 const BASE_URL =
-  "https://api.api-store.workers.dev/api/bazardor";
+  "https://openapi.programming-hero.com/api/bazardor";
 
 async function request(endpoint) {
   const response = await fetch(`${BASE_URL}${endpoint}`, {

@@ -70,7 +70,7 @@ function SignInForm() {
                     </h1>
 
                     <p className="mt-3 text-sm leading-6 text-gray-600">
-                        তোমার বাজার দর অ্যাকাউন্টে প্রবেশ করতে লগইন করো।
+                        বিস্তারিত দাম, বাজার তুলনা ও প্রোফাইল দেখতে অ্যাকাউন্টে ঢুকুন।
                     </p>
                 </div>
 
@@ -90,7 +90,7 @@ function SignInForm() {
                             required
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            placeholder="তোমার ইমেইল লিখো"
+                            placeholder="আপনার ইমেইল লিখুন"
                             className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none transition focus:border-green-600 focus:ring-2 focus:ring-green-100"
                         />
                     </div>
@@ -110,7 +110,7 @@ function SignInForm() {
                             required
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            placeholder="তোমার পাসওয়ার্ড লিখো"
+                            placeholder="আপনার পাসওয়ার্ড লিখুন"
                             className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none transition focus:border-green-600 focus:ring-2 focus:ring-green-100"
                         />
                     </div>
@@ -129,7 +129,7 @@ function SignInForm() {
                         disabled={loading}
                         className="w-full rounded-lg bg-green-700 px-4 py-3 font-semibold text-white transition hover:bg-green-800 disabled:cursor-not-allowed disabled:opacity-60"
                     >
-                        {loading ? "লগইন হচ্ছে..." : "লগইন করো"}
+                        {loading ? "লগইন হচ্ছে..." : "লগইন করুন"}
                     </button>
                 </form>
                 <div className="space-y-4 mt-4">
@@ -150,7 +150,7 @@ function SignInForm() {
                         href="/sign-up"
                         className="font-semibold text-green-700 hover:underline"
                     >
-                        অ্যাকাউন্ট তৈরি করো
+                        অ্যাকাউন্ট তৈরি করুন
                     </Link>
                 </p>
             </div>

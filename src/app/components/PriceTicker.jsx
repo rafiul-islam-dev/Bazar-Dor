@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useEffect, useState } from "react";
@@ -6,7 +5,7 @@ import Link from "next/link";
 import { useSession } from "@/lib/auth-client";
 
 const API_URL =
-  "https://api.api-store.workers.dev/api/bazardor/products";
+  "https://openapi.programming-hero.com/api/bazardor/products";
 
 function normalizeTickerProduct(product) {
   const change =
@@ -34,6 +33,11 @@ function normalizeTickerProduct(product) {
       product.name ??
       product.title ??
       "অজানা পণ্য",
+    icon:
+      product.image ??
+      product.icon ??
+      product.emoji ??
+      "🛒",
     price,
     percentage,
     direction,
@@ -53,6 +57,30 @@ function getUnitLabel(unit) {
   if (unit === "liter") return "প্রতি লিটার";
 
   return `প্রতি ${unit}`;
+}
+
+function ProductIcon({ icon }) {
+  const isImageUrl =
+    typeof icon === "string" && /^https?:\/\//i.test(icon);
+
+  if (isImageUrl) {
+    return (
+      <img
+        src={icon}
+        alt=""
+        className="h-5 w-5 shrink-0 rounded object-contain"
+      />
+    );
+  }
+
+  return (
+    <span
+      className="shrink-0 text-base"
+      aria-hidden="true"
+    >
+      {icon}
+    </span>
+  );
 }
 
 export default function PriceTicker({ products: initialProducts = [] }) {
@@ -156,6 +184,8 @@ export default function PriceTicker({ products: initialProducts = [] }) {
                 isPending ? "cursor-wait" : "cursor-pointer"
               }`}
             >
+              <ProductIcon icon={product.icon} />
+
               <span className="font-medium text-gray-800">
                 {product.name}
               </span>
